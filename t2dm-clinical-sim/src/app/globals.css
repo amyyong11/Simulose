@@ -346,6 +346,19 @@ body {
   overflow: hidden;
 }
 
+.hud-right.ghost-anchored-wrap {
+  overflow: visible;
+}
+
+.hud-bottom {
+  left: 50%;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(680px, calc(100vw - 40px));
+  max-height: min(30vh, 260px);
+  z-index: 85;
+}
+
 .hud-panel {
   background: var(--surface);
   border: 1px solid var(--surface-border);
@@ -428,10 +441,73 @@ body {
   max-height: none;
 }
 
+.ghost-anchored-panel {
+  position: relative;
+}
+
+.ghost-anchored-panel::before,
+.ghost-anchored-panel::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  pointer-events: none;
+}
+
+.ghost-anchored-panel::before {
+  width: 18px;
+  height: 18px;
+  left: -14px;
+  top: 44%;
+}
+
+.ghost-anchored-panel::after {
+  width: 10px;
+  height: 10px;
+  left: -24px;
+  top: 48%;
+}
+
 .feedback-panel {
   flex: 1 1 34%;
   min-height: 24vh;
   max-height: none;
+}
+
+.bottom-prompt-panel {
+  max-height: min(30vh, 260px);
+  display: grid;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.bottom-prompt-panel .headline {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.bottom-prompt-panel .rationale {
+  margin-top: 0;
+  font-size: 0.82rem;
+  line-height: 1.3;
+}
+
+.bottom-prompt-panel .doctor-input {
+  min-height: 64px;
+  max-height: 104px;
+}
+
+.bottom-prompt-panel .quiz-actions {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bottom-prompt-panel .quiz-actions button {
+  padding: 7px 10px;
+  font-size: 0.8rem;
 }
 
 .vitals-grid {
@@ -759,12 +835,27 @@ body {
     padding-bottom: 16px;
   }
 
+  .hud-bottom {
+    left: 50%;
+    right: auto;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: calc(100vw - 16px);
+    max-height: min(32vh, 240px);
+  }
+
   .drug-panel,
   .feedback-panel,
-  .info-panel {
+  .info-panel,
+  .bottom-prompt-panel {
     max-height: unset;
     min-height: unset;
     flex: 1 1 auto;
+  }
+
+  .bottom-prompt-panel .doctor-input {
+    min-height: 58px;
+    max-height: 88px;
   }
 
   .hud-top {

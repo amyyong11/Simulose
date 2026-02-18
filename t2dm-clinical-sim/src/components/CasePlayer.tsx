@@ -3,13 +3,20 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { ClinicScene3D } from "@/components/ClinicScene3D";
+import type { DoctorMood } from "@/components/GhostDoctor";
 import { getAllCases, getAllDrugs, gradeChoice } from "@/lib/engine";
 import type { PatientReaction } from "@/lib/types";
 
-type Mode = "browse" | "learning" | "testing";
+type Mode = "browse" | "learning" | "testing" | "diagnostic";
 type QuestionType = "mcq" | "short_answer" | "reasoning";
 type ChatMessage = { role: "user" | "assistant"; text: string };
 type DoctorErrorPayload = { error?: string; detail?: string };
+type DiagnosticReview = {
+  score: number;
+  strengths: string[];
+  gaps: string[];
+  summary: string;
+};
 const LEARNING_CONSOLIDATION_SECONDS = 30;
 
 export function CasePlayer() {
@@ -35,6 +42,9 @@ export function CasePlayer() {
   const [showDoctor, setShowDoctor] = useState(false);
   const [doctorQuestion, setDoctorQuestion] = useState("");
   const [doctorLoading, setDoctorLoading] = useState(false);
+  const [diagnosticDrugId, setDiagnosticDrugId] = useState<string | null>(null);
+  const [diagnosticThoughts, setDiagnosticThoughts] = useState("");
+  const [diagnosticReview, setDiagnosticReview] = useState<DiagnosticReview | null>(null);
   const [doctorMessages, setDoctorMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
@@ -65,6 +75,21 @@ export function CasePlayer() {
   const selectedDrugName = choice ? drugs.find((drug) => drug.id === choice)?.name ?? choice : null;
   const pendingDrugName = pendingChoice ? drugs.find((drug) => drug.id === pendingChoice)?.name ?? pendingChoice : null;
   const questionHint = buildQuestionHint(patient, questionType);
+  const diagnosticDrug = diagnosticDrugId ? drugs.find((drug) => drug.id === diagnosticDrugId) ?? null : null;
+  const doctorMood: DoctorMood = mode === "diagnostic"
+    ? getDoctorMoodFromScore(diagnosticReview?.score)
+    : getDoctorMoodFromScore(feedback?.score);
+  const doctorPromptText =
+    mode === "diagnostic" && diagnosticDrug
+      ? `Should we use ${diagnosticDrug.name}? Explain why or why not.`
+      : selectedDrugName
+        ? `What do you think about ${selectedDrugName} for this patient?`
+        : "Pick a medication, then explain your reasoning.";
+
+  useEffect(() => {
+    if (diagnosticDrugId || drugs.length === 0) return;
+    setDiagnosticDrugId(pickDiagnosticDrugId(drugs, null));
+  }, [diagnosticDrugId, drugs]);
 
   useEffect(() => {
     if (!learningConsolidationActive || breatherSecondsLeft <= 0) return;
@@ -93,6 +118,11 @@ export function CasePlayer() {
     resetAttemptState();
     if (nextMode === "testing") {
       setTestingIndex(0);
+    }
+    if (nextMode === "diagnostic") {
+      setDiagnosticDrugId((prev) => pickDiagnosticDrugId(drugs, prev));
+      setDiagnosticThoughts("");
+      setDiagnosticReview(null);
     }
   }
 
@@ -128,6 +158,13 @@ export function CasePlayer() {
     setShowHint(false);
     setBreatherSecondsLeft(0);
     setLearningPhase("idle");
+  }
+
+  function submitDiagnosticThoughts() {
+    if (!diagnosticDrug) return;
+    const content = diagnosticThoughts.trim();
+    if (content.length < 20) return;
+    setDiagnosticReview(reviewDiagnosticThoughts(content, patient, diagnosticDrug));
   }
 
   function submitShortAnswer() {
@@ -308,6 +345,8 @@ export function CasePlayer() {
           reaction={reaction}
           celebrateIdeal={celebrateIdeal}
           feedbackEmoji={feedback ? feedbackEmoji : null}
+          doctorPromptText={doctorPromptText}
+          doctorMood={doctorMood}
         />
         <div className="hud hud-top">
           <div className="hud-header">
@@ -335,6 +374,13 @@ export function CasePlayer() {
               onClick={() => switchMode("testing")}
             >
               Testing Mode
+            </button>
+            <button
+              type="button"
+              className={mode === "diagnostic" ? "active" : ""}
+              onClick={() => switchMode("diagnostic")}
+            >
+              Diagnostic View
             </button>
           </div>
           <div className="hud-case-picker">
@@ -435,7 +481,8 @@ export function CasePlayer() {
           </div>
         </div>
 
-        <div className="hud hud-right">
+        {mode !== "diagnostic" && (
+        <div className={`hud hud-right ${mode === "browse" ? "ghost-anchored-wrap" : ""}`}>
           {showDoctor && (
             <div id="ai-doctor-panel" className="hud-panel doctor-inline-panel">
               <div className="doctor-inline-header">
@@ -477,8 +524,29 @@ export function CasePlayer() {
             </div>
           )}
 
-          <div className="hud-panel drug-panel">
-            {mode === "learning" && learningConsolidationActive && feedback ? (
+          <div className={`hud-panel drug-panel ${mode === "browse" ? "ghost-anchored-panel" : ""}`}>
+            {mode === "diagnostic" ? (
+              <>
+                {diagnosticReview && (
+                  <>
+                    <p className="score">Reasoning Score: {diagnosticReview.score}/100</p>
+                    <p className="rationale">{diagnosticReview.summary}</p>
+                    <p className="feedback-label">Strengths</p>
+                    <ul className="feedback-list">
+                      {diagnosticReview.strengths.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                    <p className="feedback-label">Improve next response</p>
+                    <ul className="feedback-list">
+                      {diagnosticReview.gaps.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </>
+            ) : mode === "learning" && learningConsolidationActive && feedback ? (
               <>
                 <h3>Recall Summary</h3>
                 <p className="rationale">
@@ -686,6 +754,38 @@ export function CasePlayer() {
             </div>
           )}
         </div>
+        )}
+
+        {mode === "diagnostic" && diagnosticDrug && (
+          <div className="hud hud-bottom">
+            <div className="hud-panel bottom-prompt-panel">
+              <p className="headline">Answer Prompt</p>
+              <textarea
+                className="doctor-input"
+                rows={2}
+                placeholder=""
+                value={diagnosticThoughts}
+                onChange={(e) => setDiagnosticThoughts(e.target.value)}
+                disabled={!!diagnosticReview}
+              />
+              <div className="quiz-actions">
+                <button type="button" onClick={submitDiagnosticThoughts} disabled={!!diagnosticReview}>
+                  Submit Thoughts
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDiagnosticDrugId((prev) => pickDiagnosticDrugId(drugs, prev));
+                    setDiagnosticThoughts("");
+                    setDiagnosticReview(null);
+                  }}
+                >
+                  New Medication Prompt
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
@@ -705,6 +805,85 @@ function explainSideEffect(effect: string) {
     "B12 deficiency with long-term use": "B12 deficiency risk with long-term use: check if neuropathy or anemia develops.",
   };
   return map[effect] ?? `${effect}: review warning signs and follow-up monitoring.`;
+}
+
+function pickDiagnosticDrugId(
+  drugs: ReturnType<typeof getAllDrugs>,
+  previousDrugId: string | null
+) {
+  if (drugs.length === 0) return null;
+  const candidates = previousDrugId ? drugs.filter((drug) => drug.id !== previousDrugId) : drugs;
+  const pool = candidates.length > 0 ? candidates : drugs;
+  return pool[Math.floor(Math.random() * pool.length)]?.id ?? null;
+}
+
+function reviewDiagnosticThoughts(
+  text: string,
+  patient: ReturnType<typeof getAllCases>[number],
+  drug: ReturnType<typeof getAllDrugs>[number]
+): DiagnosticReview {
+  const normalized = text.toLowerCase();
+  const strengths: string[] = [];
+  const gaps: string[] = [];
+  let score = 0;
+
+  const mentionsKidney =
+    normalized.includes("kidney") || normalized.includes("ckd") || normalized.includes("egfr");
+  const mentionsHypo =
+    normalized.includes("hypoglycemia") || normalized.includes("hypo") || normalized.includes("low sugar");
+  const mentionsWeight = normalized.includes("weight") || normalized.includes("bmi");
+  const mentionsMonitoring =
+    normalized.includes("monitor") || normalized.includes("side effect") || normalized.includes("risk");
+  const clearFitJudgment =
+    normalized.includes("appropriate") || normalized.includes("avoid") || normalized.includes("prefer");
+
+  if (mentionsKidney) {
+    strengths.push("You linked your choice to kidney status.");
+    score += 25;
+  } else {
+    gaps.push("Reference CKD/eGFR to ground your decision.");
+  }
+  if (mentionsHypo) {
+    strengths.push("You considered hypoglycemia risk.");
+    score += 20;
+  } else {
+    gaps.push("Include hypoglycemia risk in your reasoning.");
+  }
+  if (mentionsWeight) {
+    strengths.push("You addressed weight implications.");
+    score += 15;
+  } else {
+    gaps.push("Discuss expected weight impact.");
+  }
+  if (mentionsMonitoring) {
+    strengths.push("You included a safety/monitoring plan.");
+    score += 20;
+  } else {
+    gaps.push("Add what you would monitor after starting this medication.");
+  }
+  if (clearFitJudgment) {
+    strengths.push("You made a clear appropriateness judgment.");
+    score += 10;
+  } else {
+    gaps.push("State clearly if this drug is appropriate or not for this case.");
+  }
+
+  if (patient.appropriate.includes(drug.id)) score += 10;
+  score = Math.min(100, score);
+
+  const summary = patient.appropriate.includes(drug.id)
+    ? `${drug.name} can be appropriate in this case when justified with CKD protection and low hypoglycemia burden.`
+    : `${drug.name} is less optimal here; explain why alternatives with stronger CKD/hypoglycemia profiles are preferred.`;
+
+  return { score, strengths, gaps, summary };
+}
+
+function getDoctorMoodFromScore(score?: number): DoctorMood {
+  if (typeof score !== "number") return "neutral";
+  if (score >= 85) return "happy";
+  if (score >= 65) return "neutral";
+  if (score >= 45) return "concerned";
+  return "strict";
 }
 
 function getPatientReaction(choice: string | null, score: number): PatientReaction {

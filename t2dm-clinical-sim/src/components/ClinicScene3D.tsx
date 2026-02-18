@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { MinecraftPatient } from "@/components/MinecraftPatient";
+import { GhostDoctor } from "@/components/GhostDoctor";
+import type { DoctorMood } from "@/components/GhostDoctor";
 import type { PatientReaction } from "@/lib/types";
 
 function ClinicRoom() {
@@ -257,9 +259,18 @@ type ClinicScene3DProps = {
   reaction: PatientReaction;
   celebrateIdeal: boolean;
   feedbackEmoji?: string | null;
+  doctorPromptText: string;
+  doctorMood: DoctorMood;
 };
 
-export function ClinicScene3D({ riskScore, reaction, celebrateIdeal, feedbackEmoji }: ClinicScene3DProps) {
+export function ClinicScene3D({
+  riskScore,
+  reaction,
+  celebrateIdeal,
+  feedbackEmoji,
+  doctorPromptText,
+  doctorMood,
+}: ClinicScene3DProps) {
   return (
     <div className="clinic-scene-3d">
       <Canvas
@@ -294,6 +305,7 @@ export function ClinicScene3D({ riskScore, reaction, celebrateIdeal, feedbackEmo
             celebrateIdeal={celebrateIdeal}
             feedbackEmoji={feedbackEmoji}
           />
+          <GhostDoctor mood={doctorMood} promptText={doctorPromptText} />
         </Suspense>
         <OrbitControls
           enableZoom={true}
