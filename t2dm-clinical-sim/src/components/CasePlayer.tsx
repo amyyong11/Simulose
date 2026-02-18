@@ -34,6 +34,7 @@ export function CasePlayer() {
   const riskScore = choice ? feedback?.score ?? 60 : 60;
   const reaction = getPatientReaction(choice, feedback?.score ?? 0);
   const celebrateIdeal = !!choice && (feedback?.score ?? 0) >= 95;
+  const feedbackEmoji = feedback ? getFeedbackEmoji(feedback.score) : "";
   const testingAnswered = mode === "testing" && !!choice;
   const learningBreatherActive = mode === "learning" && breatherSecondsLeft > 0;
   const selectedDrugName = choice ? drugs.find((drug) => drug.id === choice)?.name ?? choice : null;
@@ -72,7 +73,12 @@ export function CasePlayer() {
   return (
     <main className="game-view">
       <div className="game-viewport">
-        <ClinicScene3D riskScore={riskScore} reaction={reaction} celebrateIdeal={celebrateIdeal} />
+        <ClinicScene3D
+          riskScore={riskScore}
+          reaction={reaction}
+          celebrateIdeal={celebrateIdeal}
+          feedbackEmoji={feedback ? feedbackEmoji : null}
+        />
         <div className="hud hud-top">
           <div className="hud-header">
             <span className="hud-title">Simulose</span>
@@ -219,7 +225,9 @@ export function CasePlayer() {
           {feedback && !testingComplete && (
             <div className="hud-panel feedback-panel">
               <div className="score-wrap">
-                <p className="score">Score: {feedback.score}/100</p>
+                <p className="score">
+                  {feedbackEmoji} Score: {feedback.score}/100
+                </p>
                 <p className="headline">{feedback.headline}</p>
               </div>
               <p className="rationale">{feedback.rationale}</p>
@@ -306,8 +314,17 @@ function getPatientReaction(choice: string | null, score: number): PatientReacti
   if (!choice) return "neutral";
   if (score >= 85) return "happy";
   if (score >= 60) return "mildly_uncomfortable";
-  if (score >= 35) return "uncomfortable";
+  if (score >= 20) return "uncomfortable";
   return "critical";
+}
+
+function getFeedbackEmoji(score: number) {
+  if (score >= 95) return "😁";
+  if (score >= 80) return "👍";
+  if (score >= 60) return "😐";
+  if (score >= 40) return "😓";
+  if (score >= 20) return "☹️";
+  return "💀";
 }
 
 function a1cInterpretation(a1c: number) {

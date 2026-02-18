@@ -29,7 +29,9 @@ export function gradeChoice(patient: PatientCase, selectedDrugId: string | null)
   if (!drug) return null;
 
   const matchedAvoid = drug.avoidIf.filter((tag) => patient.derivedTags.includes(tag));
+  const matchedContra = (drug.contraindicatedIf ?? []).filter((tag) => patient.derivedTags.includes(tag));
   const matchedPrefer = drug.preferIf.filter((tag) => patient.derivedTags.includes(tag));
+  const isUnsafeDecoy = !!drug.unsafeDecoy;
 
   const isBest = selectedDrugId === patient.bestAlternative;
   const isAppropriate = patient.appropriate.includes(selectedDrugId);
@@ -45,13 +47,25 @@ export function gradeChoice(patient: PatientCase, selectedDrugId: string | null)
     headline = "Appropriate choice";
   }
 
-  if (matchedAvoid.length > 0) {
+  if (isUnsafeDecoy) {
+    score = 5;
+    headline = "Dangerous choice";
+  } else if (matchedContra.length > 0) {
+    score = Math.max(8, score - 60);
+    headline = "Severely unsafe for this patient";
+  } else if (matchedAvoid.length > 0) {
     score = Math.max(25, score - 35);
     headline = "High-risk choice for this patient";
   }
 
   const bullets: string[] = [];
 
+  if (isUnsafeDecoy) {
+    bullets.push("This option is intentionally unsafe/non-indicated in this simulator and can cause major harm.");
+  }
+  if (matchedContra.length > 0) {
+    bullets.push(`Strong contraindication for this case: ${matchedContra.join(", ")}.`);
+  }
   if (matchedPrefer.length > 0) {
     bullets.push(`Matches priority tags: ${matchedPrefer.join(", ")}.`);
   }

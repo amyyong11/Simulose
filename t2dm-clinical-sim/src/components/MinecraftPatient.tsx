@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
@@ -11,6 +11,7 @@ type MinecraftPatientProps = {
   riskScore: number;
   reaction: PatientReaction;
   celebrateIdeal: boolean;
+  feedbackEmoji?: string | null;
 };
 
 type Rect = {
@@ -151,7 +152,7 @@ function fallbackMaterials(color: string): MeshStandardMaterial[] {
   return [mat, mat, mat, mat, mat, mat];
 }
 
-export function MinecraftPatient({ riskScore, reaction, celebrateIdeal }: MinecraftPatientProps) {
+export function MinecraftPatient({ riskScore, reaction, celebrateIdeal, feedbackEmoji }: MinecraftPatientProps) {
   const root = useRef<Group>(null);
   const body = useRef<Group>(null);
   const head = useRef<Group>(null);
@@ -208,7 +209,8 @@ export function MinecraftPatient({ riskScore, reaction, celebrateIdeal }: Minecr
     ],
     [headMaterials, bodyMaterials, armRightMaterials, armLeftMaterials, legRightMaterials, legLeftMaterials]
   );
-  const thumbsTexture = useMemo(() => {
+  const emojiTexture = useMemo(() => {
+    const glyph = feedbackEmoji ?? "👍";
     const canvas = document.createElement("canvas");
     canvas.width = 96;
     canvas.height = 96;
@@ -218,16 +220,23 @@ export function MinecraftPatient({ riskScore, reaction, celebrateIdeal }: Minecr
     ctx.font = "72px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("👍", 48, 52);
+    ctx.fillText(glyph, 48, 52);
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.needsUpdate = true;
     return texture;
-  }, []);
+  }, [feedbackEmoji]);
   const thumbsMaterial = useMemo(() => {
-    if (!thumbsTexture) return null;
-    return new THREE.SpriteMaterial({ map: thumbsTexture, transparent: true, depthWrite: false });
-  }, [thumbsTexture]);
+    if (!emojiTexture) return null;
+    return new THREE.SpriteMaterial({ map: emojiTexture, transparent: true, depthWrite: false });
+  }, [emojiTexture]);
+
+  useEffect(() => {
+    return () => {
+      emojiTexture?.dispose();
+      thumbsMaterial?.dispose();
+    };
+  }, [emojiTexture, thumbsMaterial]);
 
   useFrame(({ clock }, delta) => {
     if (!root.current || !body.current || !head.current || !armRight.current || !armLeft.current || !legRight.current || !legLeft.current) return;
@@ -291,7 +300,7 @@ export function MinecraftPatient({ riskScore, reaction, celebrateIdeal }: Minecr
       bodyBob = 0;
       rootRotY = 0;
       rootRotZ = -1.55;
-      rootPosY = -0.95;
+      rootPosY = -0.68;
       headRotX = 0.55;
       headRotZ = -0.2;
       rightArmRotX = 1.1 + Math.sin(t * 20) * 0.08;
@@ -310,11 +319,12 @@ export function MinecraftPatient({ riskScore, reaction, celebrateIdeal }: Minecr
       delta
     );
     const death = deathProgress.current;
-    const fade = 1 - death * 0.82;
-    const scale = 1 - death * 0.36;
+    // Keep the patient visible even in critical collapse states.
+    const fade = 1;
+    const scale = 1;
 
     rootRotZ = THREE.MathUtils.lerp(rootRotZ, -Math.PI / 2, death);
-    rootPosY = THREE.MathUtils.lerp(rootPosY, -1.04, death);
+    rootPosY = THREE.MathUtils.lerp(rootPosY, -0.72, death);
     bodyBob *= 1 - death;
 
     body.current.position.y = THREE.MathUtils.damp(body.current.position.y, bodyBob, 7, delta);
@@ -338,8 +348,9 @@ export function MinecraftPatient({ riskScore, reaction, celebrateIdeal }: Minecr
     });
 
     if (thumbsRef.current) {
-      thumbsRef.current.visible = celebrateIdeal && reaction !== "critical";
-      if (celebrateIdeal) {
+      const showEmojiTrail = !!feedbackEmoji;
+      thumbsRef.current.visible = showEmojiTrail;
+      if (showEmojiTrail) {
         thumbSprites.current.forEach((sprite, i) => {
           if (!sprite) return;
           const phase = t * 1.9 + i * 0.7;

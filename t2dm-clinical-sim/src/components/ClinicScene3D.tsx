@@ -47,9 +47,10 @@ type ClinicScene3DProps = {
   riskScore: number;
   reaction: PatientReaction;
   celebrateIdeal: boolean;
+  feedbackEmoji?: string | null;
 };
 
-export function ClinicScene3D({ riskScore, reaction, celebrateIdeal }: ClinicScene3DProps) {
+export function ClinicScene3D({ riskScore, reaction, celebrateIdeal, feedbackEmoji }: ClinicScene3DProps) {
   return (
     <div className="clinic-scene-3d">
       <Canvas
@@ -79,7 +80,12 @@ export function ClinicScene3D({ riskScore, reaction, celebrateIdeal }: ClinicSce
         <pointLight position={[0.5, 0.5, 1.5]} intensity={0.15} color="#e8f0ff" distance={4} />
         <ClinicRoom />
         <Suspense fallback={null}>
-          <MinecraftPatient riskScore={riskScore} reaction={reaction} celebrateIdeal={celebrateIdeal} />
+          <MinecraftPatient
+            riskScore={riskScore}
+            reaction={reaction}
+            celebrateIdeal={celebrateIdeal}
+            feedbackEmoji={feedbackEmoji}
+          />
         </Suspense>
         <OrbitControls
           enableZoom={true}

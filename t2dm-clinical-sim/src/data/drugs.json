@@ -98,5 +98,73 @@
         "quote": "Insulin, with or without metformin, is recommended as initial pharmacologic therapy for individuals with metabolic decompensation and/or severe symptomatic hyperglycemia."
       }
     ]
+  },
+  {
+    "id": "prednisone",
+    "name": "Prednisone (systemic steroid)",
+    "benefits": ["Not a glucose-lowering therapy", "Used for inflammatory disease, not routine T2DM management"],
+    "risks": ["Can markedly worsen hyperglycemia", "Fluid retention and blood pressure worsening", "Higher infection risk with prolonged use"],
+    "avoidIf": ["ascvd", "hf"],
+    "contraindicatedIf": ["ckd", "high_hypoglycemia_risk", "weight_loss_goal"],
+    "preferIf": [],
+    "unsafeDecoy": true,
+    "evidence": [
+      {
+        "id": "x1",
+        "source": "Clinical safety principle",
+        "quote": "Systemic corticosteroids are not first-line glucose-lowering treatment and may worsen glycemic control."
+      }
+    ]
+  },
+  {
+    "id": "ibuprofen_high_dose",
+    "name": "Ibuprofen (high-dose chronic)",
+    "benefits": ["Analgesic/anti-inflammatory only", "No glucose-lowering benefit"],
+    "risks": ["Can precipitate AKI and worsen CKD", "GI bleeding risk", "Can worsen blood pressure and fluid status"],
+    "avoidIf": ["ckd", "hf"],
+    "contraindicatedIf": ["ckd"],
+    "preferIf": [],
+    "unsafeDecoy": true,
+    "evidence": [
+      {
+        "id": "x2",
+        "source": "Clinical safety principle",
+        "quote": "Chronic high-dose NSAID therapy is unsafe in CKD and does not treat hyperglycemia."
+      }
+    ]
+  },
+  {
+    "id": "gentamicin",
+    "name": "Gentamicin",
+    "benefits": ["Antibiotic for selected severe infections", "No role in chronic glucose control"],
+    "risks": ["Nephrotoxicity", "Ototoxicity", "Requires therapeutic drug monitoring"],
+    "avoidIf": ["ckd"],
+    "contraindicatedIf": ["ckd", "ascvd", "hf", "weight_loss_goal", "high_hypoglycemia_risk", "cost_sensitive"],
+    "preferIf": [],
+    "unsafeDecoy": true,
+    "evidence": [
+      {
+        "id": "x3",
+        "source": "Clinical safety principle",
+        "quote": "Aminoglycosides are infection-directed agents and can cause serious kidney injury, especially in CKD."
+      }
+    ]
+  },
+  {
+    "id": "warfarin",
+    "name": "Warfarin",
+    "benefits": ["Anticoagulant for specific thromboembolic indications", "No glucose-lowering effect"],
+    "risks": ["Major bleeding risk", "Frequent INR monitoring", "High interaction burden"],
+    "avoidIf": ["high_hypoglycemia_risk", "ckd"],
+    "contraindicatedIf": ["weight_loss_goal", "cost_sensitive"],
+    "preferIf": [],
+    "unsafeDecoy": true,
+    "evidence": [
+      {
+        "id": "x4",
+        "source": "Clinical safety principle",
+        "quote": "Anticoagulation should only be used for clear thrombosis indications and is not treatment for hyperglycemia."
+      }
+    ]
   }
 ]

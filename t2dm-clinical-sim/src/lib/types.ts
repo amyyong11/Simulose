@@ -10,7 +10,9 @@ export type DrugClass = {
   benefits: string[];
   risks: string[];
   avoidIf: string[];
+  contraindicatedIf?: string[];
   preferIf: string[];
+  unsafeDecoy?: boolean;
   evidence: EvidenceSnippet[];
 };
 
