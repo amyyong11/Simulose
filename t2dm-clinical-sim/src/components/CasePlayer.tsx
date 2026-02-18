@@ -16,6 +16,7 @@ export function CasePlayer() {
   const [testingIndex, setTestingIndex] = useState(0);
   const [choice, setChoice] = useState<string | null>(null);
   const [breatherSecondsLeft, setBreatherSecondsLeft] = useState(0);
+  const [showEmojiKey, setShowEmojiKey] = useState(false);
 
   const testingComplete = mode === "testing" && testingIndex >= cases.length;
   const testingPatient = testingComplete ? cases[0] : (cases[testingIndex] ?? cases[0]);
@@ -134,6 +135,28 @@ export function CasePlayer() {
               </p>
             )}
           </div>
+          <div className="emoji-key-wrap">
+            <button
+              type="button"
+              className="emoji-key-button"
+              onClick={() => setShowEmojiKey((open) => !open)}
+              aria-expanded={showEmojiKey}
+              aria-controls="emoji-key-panel"
+            >
+              Emoji Key
+            </button>
+            {showEmojiKey && (
+              <div id="emoji-key-panel" className="emoji-key-panel">
+                <p className="emoji-key-title">Feedback scale</p>
+                <p className="emoji-key-item">😁 95-100: excellent match</p>
+                <p className="emoji-key-item">👍 80-94: strong choice</p>
+                <p className="emoji-key-item">😐 60-79: acceptable</p>
+                <p className="emoji-key-item">😓 40-59: weak fit</p>
+                <p className="emoji-key-item">☹️ 20-39: poor choice</p>
+                <p className="emoji-key-item">💀 0-19: dangerous choice</p>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="hud hud-left">
@@ -196,8 +219,27 @@ export function CasePlayer() {
                     onClick={() => handleChoice(drug.id)}
                     disabled={disabled}
                   >
-                    <strong>{drug.name}</strong>
-                    <span>Benefits: {drug.benefits.join(", ")}</span>
+                    <strong className="drug-name">{drug.name}</strong>
+                    <div className="drug-meta-block">
+                      <p className="drug-label">What it is</p>
+                      <p className="drug-meta">{drug.description}</p>
+                    </div>
+                    <div className="drug-meta-block">
+                      <p className="drug-label">Benefits</p>
+                      <ul className="drug-list">
+                        {drug.benefits.map((benefit) => (
+                          <li key={`${drug.id}-benefit-${benefit}`}>{benefit}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="drug-meta-block">
+                      <p className="drug-label">Potential side effects</p>
+                      <ul className="drug-list">
+                        {drug.risks.map((risk) => (
+                          <li key={`${drug.id}-risk-${risk}`}>{risk}</li>
+                        ))}
+                      </ul>
+                    </div>
                   </button>
                 );
               })}
@@ -231,11 +273,15 @@ export function CasePlayer() {
                 <p className="headline">{feedback.headline}</p>
               </div>
               <p className="rationale">{feedback.rationale}</p>
-              <ul>
+              <p className="feedback-label">Key points</p>
+              <ul className="feedback-list">
                 {feedback.bullets.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
+              {feedback.evidence.length > 0 && (
+                <p className="feedback-label">Evidence</p>
+              )}
               {feedback.evidence.length > 0 && (
                 <p className="evidence">
                   Evidence: {feedback.evidence[0].source} - {feedback.evidence[0].quote}

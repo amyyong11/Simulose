@@ -2,6 +2,7 @@
   {
     "id": "metformin",
     "name": "Metformin",
+    "description": "First-line oral biguanide that lowers hepatic glucose production and improves insulin sensitivity.",
     "benefits": ["Durable A1C lowering", "Negligible hypoglycemia or weight gain", "Long-term safety and affordability"],
     "risks": ["GI side effects (minimize with low initial dose)", "Vitamin B12 deficiency with long-term use"],
     "avoidIf": ["advanced_ckd", "gi_intolerance"],
@@ -17,6 +18,7 @@
   {
     "id": "sglt2",
     "name": "SGLT2 Inhibitor",
+    "description": "Oral class that increases urinary glucose excretion and provides heart-kidney protection.",
     "benefits": ["Cardiorenal protection in CKD, HF, and high CV risk", "Weight loss", "Negligible hypoglycemia"],
     "risks": ["Genital mycotic infections", "Volume depletion", "Hold in acute illness; eGFR limits per product"],
     "avoidIf": [],
@@ -37,6 +39,7 @@
   {
     "id": "glp1",
     "name": "GLP-1 Receptor Agonist",
+    "description": "Incretin-based therapy (often injectable) that improves glucose control and supports weight loss.",
     "benefits": ["MACE reduction in high CV risk", "Weight loss", "Negligible hypoglycemia", "Nonfatal stroke reduction"],
     "risks": ["Nausea, vomiting, diarrhea (often transient)", "Avoid in pregnancy; safety unknown"],
     "avoidIf": ["gi_intolerance"],
@@ -57,6 +60,7 @@
   {
     "id": "dpp4",
     "name": "DPP-4 Inhibitor",
+    "description": "Oral incretin enhancer with modest glucose lowering and generally low hypoglycemia risk.",
     "benefits": ["Oral dosing", "Low hypoglycemia risk", "Weight neutral"],
     "risks": ["Modest A1C lowering vs GLP-1/SGLT2", "Some agents: heart failure signal in trials"],
     "avoidIf": ["hf"],
@@ -72,6 +76,7 @@
   {
     "id": "sulfonylurea",
     "name": "Sulfonylurea",
+    "description": "Oral insulin secretagogue that lowers glucose effectively but can increase hypo risk.",
     "benefits": ["Effective A1C lowering", "Low cost"],
     "risks": ["Hypoglycemia", "Weight gain (1.5–5 kg)"],
     "avoidIf": ["high_hypoglycemia_risk"],
@@ -87,6 +92,7 @@
   {
     "id": "basal_insulin",
     "name": "Basal Insulin",
+    "description": "Long-acting insulin replacement used for strong glucose lowering, especially when control is severe.",
     "benefits": ["No dose ceiling; strong glucose lowering", "First-line in metabolic decompensation or severe symptomatic hyperglycemia"],
     "risks": ["Hypoglycemia", "Weight gain", "Injection burden"],
     "avoidIf": ["high_hypoglycemia_risk"],
@@ -102,6 +108,7 @@
   {
     "id": "prednisone",
     "name": "Prednisone (systemic steroid)",
+    "description": "Systemic corticosteroid for inflammatory disease; not a diabetes glucose-lowering treatment.",
     "benefits": ["Not a glucose-lowering therapy", "Used for inflammatory disease, not routine T2DM management"],
     "risks": ["Can markedly worsen hyperglycemia", "Fluid retention and blood pressure worsening", "Higher infection risk with prolonged use"],
     "avoidIf": ["ascvd", "hf"],
@@ -119,6 +126,7 @@
   {
     "id": "ibuprofen_high_dose",
     "name": "Ibuprofen (high-dose chronic)",
+    "description": "NSAID analgesic/anti-inflammatory; not used to treat hyperglycemia.",
     "benefits": ["Analgesic/anti-inflammatory only", "No glucose-lowering benefit"],
     "risks": ["Can precipitate AKI and worsen CKD", "GI bleeding risk", "Can worsen blood pressure and fluid status"],
     "avoidIf": ["ckd", "hf"],
@@ -136,6 +144,7 @@
   {
     "id": "gentamicin",
     "name": "Gentamicin",
+    "description": "Aminoglycoside antibiotic for serious infections; no role in chronic diabetes control.",
     "benefits": ["Antibiotic for selected severe infections", "No role in chronic glucose control"],
     "risks": ["Nephrotoxicity", "Ototoxicity", "Requires therapeutic drug monitoring"],
     "avoidIf": ["ckd"],
@@ -153,6 +162,7 @@
   {
     "id": "warfarin",
     "name": "Warfarin",
+    "description": "Vitamin K antagonist anticoagulant for clot prevention in specific indications, not glucose control.",
     "benefits": ["Anticoagulant for specific thromboembolic indications", "No glucose-lowering effect"],
     "risks": ["Major bleeding risk", "Frequent INR monitoring", "High interaction burden"],
     "avoidIf": ["high_hypoglycemia_risk", "ckd"],

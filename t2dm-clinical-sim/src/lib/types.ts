@@ -7,6 +7,7 @@ export type EvidenceSnippet = {
 export type DrugClass = {
   id: string;
   name: string;
+  description: string;
   benefits: string[];
   risks: string[];
   avoidIf: string[];
