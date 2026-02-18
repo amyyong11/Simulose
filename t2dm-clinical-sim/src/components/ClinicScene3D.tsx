@@ -244,7 +244,6 @@ export function ClinicScene3D({ riskScore, reaction, celebrateIdeal, feedbackEmo
         gl={{ antialias: true, alpha: false }}
       >
         <color attach="background" args={["#a8b8c8"]} />
-        <fog attach="fog" args={["#a8b8c8", 5, 13]} />
         <ambientLight intensity={0.5} />
         <directionalLight
           position={[3.5, 5, 4]}

@@ -352,6 +352,8 @@ export function MinecraftPatient({ riskScore, reaction, celebrateIdeal, feedback
       const showEmojiTrail = !!feedbackEmoji;
       thumbsRef.current.visible = showEmojiTrail;
       if (showEmojiTrail) {
+        // Keep emoji trail rising upward even when the body is tilted/fallen.
+        thumbsRef.current.rotation.z = -root.current.rotation.z;
         thumbSprites.current.forEach((sprite, i) => {
           if (!sprite) return;
           const phase = t * 1.9 + i * 0.7;
