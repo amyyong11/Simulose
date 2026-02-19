@@ -132,45 +132,6 @@ export function GhostDoctor({
             }}
           >
             {promptText}
-            <span
-              style={{
-                position: "absolute",
-                left: "50%",
-                bottom: "-10px",
-                width: "14px",
-                height: "14px",
-                transform: "translateX(-50%)",
-                background: "rgba(255,255,255,0.96)",
-                border: "1px solid rgba(31,44,58,0.2)",
-                borderRadius: "50%",
-              }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                left: "50%",
-                bottom: "-24px",
-                width: "10px",
-                height: "10px",
-                transform: "translateX(-50%)",
-                background: "rgba(255,255,255,0.95)",
-                border: "1px solid rgba(31,44,58,0.18)",
-                borderRadius: "50%",
-              }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                left: "50%",
-                bottom: "-34px",
-                width: "7px",
-                height: "7px",
-                transform: "translateX(-50%)",
-                background: "rgba(255,255,255,0.94)",
-                border: "1px solid rgba(31,44,58,0.16)",
-                borderRadius: "50%",
-              }}
-            />
           </div>
         </Html>
       )}

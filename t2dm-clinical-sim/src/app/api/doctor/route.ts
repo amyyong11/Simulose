@@ -78,14 +78,17 @@ export async function POST(req: Request) {
 
   const systemInstruction =
     "You are an educational AI Doctor tutor for a diabetes medication simulator. " +
-    "Explain reasoning clearly and concisely for students. Use only the provided case context when possible. " +
-    "If unsure, say what is uncertain. Do not provide definitive diagnosis or treatment directives for real patients. " +
+    "Only respond to what the student explicitly asks. Do not give full unsolicited answer keys or long explanations by default. " +
+    "If the student shares their choice/reasoning, prioritize concise feedback first: what is correct, what to improve, and one next step. " +
+    "Use only the provided simulator context. If unsure, say what is uncertain. " +
+    "Do not provide definitive diagnosis or treatment directives for real patients. " +
     "Always include a short safety reminder that this is educational and requires clinician verification.";
 
   const userPrompt =
     `Student question:\n${question}\n\n` +
     `Simulator context:\n${contextText}\n\n` +
-    "Answer in plain language with: 1) direct answer, 2) why, 3) what to monitor.";
+    "Reply in plain language and stay scoped to the student's request. " +
+    "If they asked for feedback, give concise feedback (strengths, gaps, next step) instead of a full worked answer.";
 
   try {
     const errors: string[] = [];

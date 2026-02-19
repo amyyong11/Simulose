@@ -90,6 +90,11 @@ export function CasePlayer() {
     mode,
     diagnosticDrugName: diagnosticDrug?.name ?? null,
   });
+  const hasAskedDoctor = doctorMessages.some((message) => message.role === "user");
+  const latestDoctorReply = hasAskedDoctor
+    ? [...doctorMessages].reverse().find((message) => message.role === "assistant")?.text ?? null
+    : null;
+  const doctorBubbleText = latestDoctorReply ?? doctorPromptText;
 
   useEffect(() => {
     if (diagnosticDrugId || drugs.length === 0) return;
@@ -342,7 +347,7 @@ export function CasePlayer() {
           reaction={reaction}
           celebrateIdeal={celebrateIdeal}
           feedbackEmoji={feedback ? feedbackEmoji : null}
-          doctorPromptText={doctorPromptText}
+          doctorPromptText={doctorBubbleText}
           doctorMood={doctorMood}
           doctorShowBubble
         />
