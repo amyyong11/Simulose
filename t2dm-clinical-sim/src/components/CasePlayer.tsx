@@ -94,6 +94,8 @@ export function CasePlayer() {
     selectedDrugName,
     feedbackScore: feedback?.score,
   });
+  const latestDoctorReply = [...doctorMessages].reverse().find((message) => message.role === "assistant")?.text ?? null;
+  const doctorBubbleText = latestDoctorReply ?? doctorPromptText;
 
   useEffect(() => {
     if (diagnosticDrugId || drugs.length === 0) return;
@@ -346,7 +348,7 @@ export function CasePlayer() {
           reaction={reaction}
           celebrateIdeal={celebrateIdeal}
           feedbackEmoji={feedback ? feedbackEmoji : null}
-          doctorPromptText={doctorPromptText}
+          doctorPromptText={doctorBubbleText}
           doctorMood={doctorMood}
           doctorShowBubble
         />
@@ -509,7 +511,9 @@ export function CasePlayer() {
               </div>
               <p className="doctor-subtitle">Educational coach for this case</p>
               <div className="doctor-chat">
-                {doctorMessages.map((message, idx) => (
+                {doctorMessages
+                  .filter((message) => message.role === "user")
+                  .map((message, idx) => (
                   <p key={`${message.role}-${idx}`} className={`doctor-message ${message.role}`}>
                     {message.text}
                   </p>

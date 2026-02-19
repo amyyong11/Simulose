@@ -107,6 +107,7 @@ export function GhostDoctor({
       {showBubble && (
         <Html position={[-0.04, 1.42, 0.18]} center>
           <div
+            onWheel={(e) => e.stopPropagation()}
             style={{
               position: "relative",
               background: "rgba(255,255,255,0.96)",
@@ -119,8 +120,15 @@ export function GhostDoctor({
               fontWeight: 600,
               maxWidth: "250px",
               width: "max-content",
+              maxHeight: "180px",
               boxShadow: "0 8px 20px rgba(0,0,0,0.22)",
               whiteSpace: "pre-wrap",
+              overflowY: "auto",
+              overflowX: "hidden",
+              pointerEvents: "auto",
+              touchAction: "pan-y",
+              overscrollBehavior: "contain",
+              WebkitOverflowScrolling: "touch",
             }}
           >
             {promptText}
