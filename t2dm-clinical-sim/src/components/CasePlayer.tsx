@@ -11,6 +11,7 @@ type Mode = "browse" | "learning" | "testing" | "diagnostic";
 type QuestionType = "mcq" | "short_answer";
 type DifficultyLevel = "basic" | "intermediate" | "advanced";
 type ChatMessage = { role: "user" | "assistant"; text: string };
+type BubbleSource = "context" | "chat";
 type DoctorErrorPayload = { error?: string; detail?: string };
 type DiagnosticReview = {
   score: number;
@@ -38,6 +39,7 @@ export function CasePlayer() {
   const [showDoctor, setShowDoctor] = useState(false);
   const [doctorQuestion, setDoctorQuestion] = useState("");
   const [doctorLoading, setDoctorLoading] = useState(false);
+  const [bubbleSource, setBubbleSource] = useState<BubbleSource>("context");
   const [diagnosticDrugId, setDiagnosticDrugId] = useState<string | null>(null);
   const [diagnosticThoughts, setDiagnosticThoughts] = useState("");
   const [diagnosticReview, setDiagnosticReview] = useState<DiagnosticReview | null>(null);
@@ -86,11 +88,9 @@ export function CasePlayer() {
     selectedDrugName,
     feedbackScore: feedback?.score,
   });
-  const hasAskedDoctor = doctorMessages.some((message) => message.role === "user");
-  const latestDoctorReply = hasAskedDoctor
-    ? [...doctorMessages].reverse().find((message) => message.role === "assistant")?.text ?? null
-    : null;
-  const doctorBubbleText = latestDoctorReply ?? doctorPromptText;
+  const latestDoctorReply = [...doctorMessages].reverse().find((message) => message.role === "assistant")?.text ?? null;
+  const doctorBubbleText =
+    bubbleSource === "chat" && latestDoctorReply ? latestDoctorReply : doctorPromptText;
 
   useEffect(() => {
     if (diagnosticDrugId || drugs.length === 0) return;
@@ -137,6 +137,7 @@ export function CasePlayer() {
 
   function switchMode(nextMode: Mode) {
     setMode(nextMode);
+    setBubbleSource("context");
     resetAttemptState();
     if (nextMode === "browse") {
       setQuestionType("mcq");
@@ -156,6 +157,7 @@ export function CasePlayer() {
   function handleChoice(drugId: string) {
     setShortAnswerError("");
     setChoice(drugId);
+    setBubbleSource("context");
   }
 
   function nextAttempt() {
@@ -177,6 +179,7 @@ export function CasePlayer() {
     if (content.length < 20) return;
     const review = reviewDiagnosticThoughts(content, patient, diagnosticDrug);
     setDiagnosticReview(review);
+    setBubbleSource("context");
     if (!diagnosticAttemptScored && review.score >= 70) {
       const earned = Math.max(30, Math.round(review.score * 0.5));
       setScoredPoints((prev) => prev + earned);
@@ -198,6 +201,7 @@ export function CasePlayer() {
     }
     setShortAnswerError("");
     setChoice(resolved.id);
+    setBubbleSource("context");
   }
 
   function startLearningConsolidation() {
@@ -251,6 +255,7 @@ export function CasePlayer() {
         data.answer ??
         "I could not generate a response right now. Try rephrasing your question.";
       setDoctorMessages((prev) => [...prev, { role: "assistant", text: answer }]);
+      setBubbleSource("chat");
     } catch (error) {
       const message =
         error instanceof Error && error.message
@@ -263,6 +268,7 @@ export function CasePlayer() {
           text: `AI Doctor is currently unavailable: ${message}`,
         },
       ]);
+      setBubbleSource("chat");
     } finally {
       setDoctorLoading(false);
     }
@@ -323,7 +329,7 @@ export function CasePlayer() {
             </button>
           </div>
         )}
-        {mode !== "browse" && (
+        {mode === "testing" && (
           <div className="quiz-actions">
             <button type="button" onClick={openDoctorFromFeedback}>
               Speak to AI Doctor
@@ -562,26 +568,41 @@ export function CasePlayer() {
                 <h3>{mode === "testing" ? "Pick one medication" : "Medication choices"}</h3>
                 {mode !== "testing" && (
                   <div className="question-type-switch" role="tablist" aria-label="Question style">
-                    <button
-                      type="button"
-                      className={questionType === "mcq" ? "active" : ""}
-                      onClick={() => {
-                        setQuestionType("mcq");
-                        nextAttempt();
-                      }}
-                    >
-                      MCQ
-                    </button>
-                    <button
-                      type="button"
-                      className={questionType === "short_answer" ? "active" : ""}
-                      onClick={() => {
-                        setQuestionType("short_answer");
-                        nextAttempt();
-                      }}
-                    >
-                      Short Answer
-                    </button>
+                    {mode === "browse" ? (
+                      <button
+                        type="button"
+                        className={questionType === "mcq" ? "active" : ""}
+                        onClick={() => {
+                          setQuestionType("mcq");
+                          nextAttempt();
+                        }}
+                      >
+                        Medications
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          className={questionType === "mcq" ? "active" : ""}
+                          onClick={() => {
+                            setQuestionType("mcq");
+                            nextAttempt();
+                          }}
+                        >
+                          MCQ
+                        </button>
+                        <button
+                          type="button"
+                          className={questionType === "short_answer" ? "active" : ""}
+                          onClick={() => {
+                            setQuestionType("short_answer");
+                            nextAttempt();
+                          }}
+                        >
+                          Short Answer
+                        </button>
+                      </>
+                    )}
                   </div>
                 )}
                 <div className="hint-row">
@@ -855,6 +876,11 @@ function buildDoctorPromptText({
   }
 
   if (mode === "learning") {
+    if (selectedDrugName && typeof feedbackScore === "number") {
+      if (feedbackScore >= 85) return `${selectedDrugName}: great fit for this case.`;
+      if (feedbackScore >= 60) return `${selectedDrugName}: decent option, but we can optimize further.`;
+      return `${selectedDrugName}: not ideal here; reassess key risks and goals.`;
+    }
     return "Which medication would you choose?";
   }
 
