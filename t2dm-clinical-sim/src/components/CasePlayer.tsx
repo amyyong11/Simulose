@@ -7,18 +7,12 @@ import type { DoctorMood } from "@/components/GhostDoctor";
 import { getAllCases, getAllDrugs, gradeChoice } from "@/lib/engine";
 import type { PatientReaction } from "@/lib/types";
 
-type Mode = "browse" | "learning" | "testing" | "diagnostic";
+type Mode = "browse" | "learning" | "testing";
 type QuestionType = "mcq" | "short_answer";
 type DifficultyLevel = "basic" | "intermediate" | "advanced";
 type ChatMessage = { role: "user" | "assistant"; text: string };
 type BubbleSource = "context" | "chat";
 type DoctorErrorPayload = { error?: string; detail?: string };
-type DiagnosticReview = {
-  score: number;
-  strengths: string[];
-  gaps: string[];
-  summary: string;
-};
 const LEARNING_CONSOLIDATION_SECONDS = 30;
 
 export function CasePlayer() {
@@ -40,11 +34,7 @@ export function CasePlayer() {
   const [doctorQuestion, setDoctorQuestion] = useState("");
   const [doctorLoading, setDoctorLoading] = useState(false);
   const [bubbleSource, setBubbleSource] = useState<BubbleSource>("context");
-  const [diagnosticDrugId, setDiagnosticDrugId] = useState<string | null>(null);
-  const [diagnosticThoughts, setDiagnosticThoughts] = useState("");
-  const [diagnosticReview, setDiagnosticReview] = useState<DiagnosticReview | null>(null);
   const [scoredPoints, setScoredPoints] = useState(0);
-  const [diagnosticAttemptScored, setDiagnosticAttemptScored] = useState(false);
   const [doctorMessages, setDoctorMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
@@ -74,28 +64,19 @@ export function CasePlayer() {
   const learningConsolidationActive = mode === "learning" && learningPhase === "timer";
   const selectedDrugName = choice ? drugs.find((drug) => drug.id === choice)?.name ?? choice : null;
   const questionHint = buildQuestionHint(patient, questionType);
-  const diagnosticDrug = diagnosticDrugId ? drugs.find((drug) => drug.id === diagnosticDrugId) ?? null : null;
   const scoredTestingAttempts = useRef<Set<string>>(new Set());
   const difficultyLevel: DifficultyLevel =
     scoredPoints >= 1500 ? "advanced" : scoredPoints >= 1000 ? "intermediate" : "basic";
   const allowedTestingQuestionTypes: QuestionType[] = useMemo(() => ["short_answer"], []);
-  const doctorMood: DoctorMood = mode === "diagnostic"
-    ? getDoctorMoodFromScore(diagnosticReview?.score)
-    : getDoctorMoodFromScore(feedback?.score);
+  const doctorMood: DoctorMood = getDoctorMoodFromScore(feedback?.score);
   const doctorPromptText = buildDoctorPromptText({
     mode,
-    diagnosticDrugName: diagnosticDrug?.name ?? null,
     selectedDrugName,
     feedbackScore: feedback?.score,
   });
   const latestDoctorReply = [...doctorMessages].reverse().find((message) => message.role === "assistant")?.text ?? null;
   const doctorBubbleText =
     bubbleSource === "chat" && latestDoctorReply ? latestDoctorReply : doctorPromptText;
-
-  useEffect(() => {
-    if (diagnosticDrugId || drugs.length === 0) return;
-    setDiagnosticDrugId(pickDiagnosticDrugId(drugs, null));
-  }, [diagnosticDrugId, drugs]);
 
   useEffect(() => {
     if (!learningConsolidationActive || breatherSecondsLeft <= 0) return;
@@ -146,12 +127,6 @@ export function CasePlayer() {
       setQuestionType("short_answer");
       setTestingIndex(0);
     }
-    if (nextMode === "diagnostic") {
-      setDiagnosticDrugId((prev) => pickDiagnosticDrugId(drugs, prev));
-      setDiagnosticThoughts("");
-      setDiagnosticReview(null);
-      setDiagnosticAttemptScored(false);
-    }
   }
 
   function handleChoice(drugId: string) {
@@ -171,20 +146,6 @@ export function CasePlayer() {
     setShowHint(false);
     setBreatherSecondsLeft(0);
     setLearningPhase("idle");
-  }
-
-  function submitDiagnosticThoughts() {
-    if (!diagnosticDrug) return;
-    const content = diagnosticThoughts.trim();
-    if (content.length < 20) return;
-    const review = reviewDiagnosticThoughts(content, patient, diagnosticDrug);
-    setDiagnosticReview(review);
-    setBubbleSource("context");
-    if (!diagnosticAttemptScored && review.score >= 70) {
-      const earned = Math.max(30, Math.round(review.score * 0.5));
-      setScoredPoints((prev) => prev + earned);
-      setDiagnosticAttemptScored(true);
-    }
   }
 
   function submitShortAnswer() {
@@ -370,10 +331,9 @@ export function CasePlayer() {
               <option value="browse">Browse Mode</option>
               <option value="learning">Learning Mode</option>
               <option value="testing">Testing Mode</option>
-              <option value="diagnostic">Diagnostic View</option>
             </select>
           </div>
-          {(mode === "testing" || mode === "diagnostic") && (
+          {mode === "testing" && (
             <p className="quiz-progress">
               Points: {scoredPoints} | Difficulty: {difficultyLevel}
             </p>
@@ -495,7 +455,6 @@ export function CasePlayer() {
           </div>
         </div>
 
-        {mode !== "diagnostic" && (
         <div className="hud hud-right">
           {showDoctor && (
             <div id="ai-doctor-panel" className="hud-panel doctor-inline-panel">
@@ -707,39 +666,6 @@ export function CasePlayer() {
             </div>
           )}
         </div>
-        )}
-
-        {mode === "diagnostic" && diagnosticDrug && (
-          <div className="hud hud-bottom">
-            <div className="hud-panel bottom-prompt-panel">
-              <p className="headline">Answer Prompt</p>
-              <textarea
-                className="doctor-input"
-                rows={2}
-                placeholder=""
-                value={diagnosticThoughts}
-                onChange={(e) => setDiagnosticThoughts(e.target.value)}
-                disabled={!!diagnosticReview}
-              />
-              <div className="quiz-actions">
-                <button type="button" onClick={submitDiagnosticThoughts} disabled={!!diagnosticReview}>
-                  Submit Thoughts
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setDiagnosticDrugId((prev) => pickDiagnosticDrugId(drugs, prev));
-                    setDiagnosticThoughts("");
-                    setDiagnosticReview(null);
-                    setDiagnosticAttemptScored(false);
-                  }}
-                >
-                  New Medication Prompt
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </main>
   );
@@ -761,77 +687,6 @@ function explainSideEffect(effect: string) {
   return map[effect] ?? `${effect}: review warning signs and follow-up monitoring.`;
 }
 
-function pickDiagnosticDrugId(
-  drugs: ReturnType<typeof getAllDrugs>,
-  previousDrugId: string | null
-) {
-  if (drugs.length === 0) return null;
-  const candidates = previousDrugId ? drugs.filter((drug) => drug.id !== previousDrugId) : drugs;
-  const pool = candidates.length > 0 ? candidates : drugs;
-  return pool[Math.floor(Math.random() * pool.length)]?.id ?? null;
-}
-
-function reviewDiagnosticThoughts(
-  text: string,
-  patient: ReturnType<typeof getAllCases>[number],
-  drug: ReturnType<typeof getAllDrugs>[number]
-): DiagnosticReview {
-  const normalized = text.toLowerCase();
-  const strengths: string[] = [];
-  const gaps: string[] = [];
-  let score = 0;
-
-  const mentionsKidney =
-    normalized.includes("kidney") || normalized.includes("ckd") || normalized.includes("egfr");
-  const mentionsHypo =
-    normalized.includes("hypoglycemia") || normalized.includes("hypo") || normalized.includes("low sugar");
-  const mentionsWeight = normalized.includes("weight") || normalized.includes("bmi");
-  const mentionsMonitoring =
-    normalized.includes("monitor") || normalized.includes("side effect") || normalized.includes("risk");
-  const clearFitJudgment =
-    normalized.includes("appropriate") || normalized.includes("avoid") || normalized.includes("prefer");
-
-  if (mentionsKidney) {
-    strengths.push("You linked your choice to kidney status.");
-    score += 25;
-  } else {
-    gaps.push("Reference CKD/eGFR to ground your decision.");
-  }
-  if (mentionsHypo) {
-    strengths.push("You considered hypoglycemia risk.");
-    score += 20;
-  } else {
-    gaps.push("Include hypoglycemia risk in your reasoning.");
-  }
-  if (mentionsWeight) {
-    strengths.push("You addressed weight implications.");
-    score += 15;
-  } else {
-    gaps.push("Discuss expected weight impact.");
-  }
-  if (mentionsMonitoring) {
-    strengths.push("You included a safety/monitoring plan.");
-    score += 20;
-  } else {
-    gaps.push("Add what you would monitor after starting this medication.");
-  }
-  if (clearFitJudgment) {
-    strengths.push("You made a clear appropriateness judgment.");
-    score += 10;
-  } else {
-    gaps.push("State clearly if this drug is appropriate or not for this case.");
-  }
-
-  if (patient.appropriate.includes(drug.id)) score += 10;
-  score = Math.min(100, score);
-
-  const summary = patient.appropriate.includes(drug.id)
-    ? `${drug.name} can be appropriate in this case when justified with CKD protection and low hypoglycemia burden.`
-    : `${drug.name} is less optimal here; explain why alternatives with stronger CKD/hypoglycemia profiles are preferred.`;
-
-  return { score, strengths, gaps, summary };
-}
-
 function getDoctorMoodFromScore(score?: number): DoctorMood {
   if (typeof score !== "number") return "neutral";
   if (score >= 85) return "happy";
@@ -842,30 +697,13 @@ function getDoctorMoodFromScore(score?: number): DoctorMood {
 
 function buildDoctorPromptText({
   mode,
-  diagnosticDrugName,
   selectedDrugName,
   feedbackScore,
 }: {
   mode: Mode;
-  diagnosticDrugName: string | null;
   selectedDrugName: string | null;
   feedbackScore?: number;
 }) {
-  if (mode === "diagnostic" && diagnosticDrugName) {
-    return pickBubbleVariant(
-      [
-        `Diagnostic question: Would you use ${diagnosticDrugName} for this patient, and why?`,
-        `Medication challenge: Is ${diagnosticDrugName} appropriate here or should we avoid it?`,
-        `Quick check: How would you justify ${diagnosticDrugName} in this case?`,
-      ],
-      `diagnostic:${diagnosticDrugName}`
-    );
-  }
-
-  if (mode === "diagnostic") {
-    return "Diagnostic mode: Is this medication the best choice for this patient?";
-  }
-
   if (mode === "browse") {
     if (selectedDrugName && typeof feedbackScore === "number") {
       if (feedbackScore >= 85) return `${selectedDrugName}: strong pick for this patient.`;
