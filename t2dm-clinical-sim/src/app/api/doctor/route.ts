@@ -5,6 +5,24 @@ type DoctorRequest = {
   context?: unknown;
 };
 
+type DoctorContext = {
+  mode?: string;
+  patient?: {
+    title?: string;
+    bestAlternative?: string;
+    appropriate?: string[];
+    teachingPoint?: string;
+  };
+  selectedDrug?: {
+    id?: string;
+    name?: string;
+  } | null;
+  feedback?: {
+    score?: number;
+    headline?: string;
+  } | null;
+};
+
 const OPENAI_API_URL = "https://api.openai.com/v1/responses";
 const OPENAI_MODELS = [
   "gpt-4.1-mini",
@@ -74,12 +92,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Question is required." }, { status: 400 });
   }
 
+  const context = (body.context ?? {}) as DoctorContext;
   const contextText = JSON.stringify(body.context ?? {}, null, 2);
+  const testingAnswerKey =
+    context.mode === "testing"
+      ? buildTestingAnswerKey(context)
+      : null;
 
   const systemInstruction =
     "You are an educational AI Doctor tutor for a diabetes medication simulator. " +
-    "Only respond to what the student explicitly asks. Do not give full unsolicited answer keys or long explanations by default. " +
-    "If the student shares their choice/reasoning, prioritize concise feedback first: what is correct, what to improve, and one next step. " +
+    "Only respond to what the student explicitly asks. " +
+    "Give a direct answer and explain why it is correct using the provided case context. " +
+    "If the student shares their choice/reasoning, provide concise feedback: what is correct, what is incorrect, and why. " +
+    "In testing mode, use the provided patient answer key as ground truth for correctness and reasoning." +
     "Use only the provided simulator context. If unsure, say what is uncertain. " +
     "Do not provide definitive diagnosis or treatment directives for real patients. " +
     "Always include a short safety reminder that this is educational and requires clinician verification.";
@@ -87,8 +112,9 @@ export async function POST(req: Request) {
   const userPrompt =
     `Student question:\n${question}\n\n` +
     `Simulator context:\n${contextText}\n\n` +
+    (testingAnswerKey ? `Testing answer key:\n${testingAnswerKey}\n\n` : "") +
     "Reply in plain language and stay scoped to the student's request. " +
-    "If they asked for feedback, give concise feedback (strengths, gaps, next step) instead of a full worked answer.";
+    "When relevant, state the best medication class and the clinical reasoning for it.";
 
   try {
     const errors: string[] = [];
@@ -140,4 +166,22 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
+}
+
+function buildTestingAnswerKey(context: DoctorContext): string {
+  const patientTitle = context.patient?.title?.trim() || "Current patient";
+  const best = context.patient?.bestAlternative?.trim() || "unknown";
+  const appropriate = Array.isArray(context.patient?.appropriate)
+    ? context.patient?.appropriate.filter((item) => typeof item === "string" && item.trim().length > 0)
+    : [];
+  const teachingPoint = context.patient?.teachingPoint?.trim() || "No teaching point provided.";
+  const selectedDrug = context.selectedDrug?.name || context.selectedDrug?.id || "No drug selected";
+
+  return (
+    `Patient: ${patientTitle}\n` +
+    `Best medication class: ${best}\n` +
+    `Other appropriate options: ${appropriate.length > 0 ? appropriate.join(", ") : "None listed"}\n` +
+    `Student selected: ${selectedDrug}\n` +
+    `Core reasoning: ${teachingPoint}`
+  );
 }

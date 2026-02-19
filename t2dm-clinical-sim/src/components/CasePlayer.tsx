@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { ClinicScene3D } from "@/components/ClinicScene3D";
 import type { DoctorMood } from "@/components/GhostDoctor";
 import { getAllCases, getAllDrugs, gradeChoice } from "@/lib/engine";
-import type { PatientReaction } from "@/lib/types";
+import type { Feedback, PatientReaction } from "@/lib/types";
 
 type Mode = "browse" | "learning" | "testing";
 type QuestionType = "mcq" | "short_answer";
@@ -26,6 +26,8 @@ export function CasePlayer() {
   const [choice, setChoice] = useState<string | null>(null);
   const [shortAnswerInput, setShortAnswerInput] = useState("");
   const [shortAnswerError, setShortAnswerError] = useState("");
+  const [submittedResponseFeedback, setSubmittedResponseFeedback] = useState<Feedback | null>(null);
+  const [testingReasoningQualified, setTestingReasoningQualified] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [breatherSecondsLeft, setBreatherSecondsLeft] = useState(0);
   const [learningPhase, setLearningPhase] = useState<"idle" | "timer">("idle");
@@ -55,11 +57,12 @@ export function CasePlayer() {
     }
     return null;
   }, [patient, choice]);
+  const displayFeedback = submittedResponseFeedback ?? feedback;
 
-  const riskScore = choice ? feedback?.score ?? 60 : 60;
-  const reaction = getPatientReaction(choice, feedback?.score ?? 0);
-  const celebrateIdeal = !!choice && (feedback?.score ?? 0) >= 95;
-  const feedbackEmoji = feedback ? getFeedbackEmoji(feedback.score) : "";
+  const riskScore = choice ? displayFeedback?.score ?? 60 : 60;
+  const reaction = getPatientReaction(choice, displayFeedback?.score ?? 0);
+  const celebrateIdeal = !!choice && (displayFeedback?.score ?? 0) >= 95;
+  const feedbackEmoji = displayFeedback ? getFeedbackEmoji(displayFeedback.score) : "";
   const testingAnswered = mode === "testing" && !!choice;
   const learningConsolidationActive = mode === "learning" && learningPhase === "timer";
   const selectedDrugName = choice ? drugs.find((drug) => drug.id === choice)?.name ?? choice : null;
@@ -68,11 +71,12 @@ export function CasePlayer() {
   const difficultyLevel: DifficultyLevel =
     scoredPoints >= 1500 ? "advanced" : scoredPoints >= 1000 ? "intermediate" : "basic";
   const allowedTestingQuestionTypes: QuestionType[] = useMemo(() => ["short_answer"], []);
-  const doctorMood: DoctorMood = getDoctorMoodFromScore(feedback?.score);
+  const doctorMood: DoctorMood = getDoctorMoodFromScore(displayFeedback?.score);
   const doctorPromptText = buildDoctorPromptText({
     mode,
     selectedDrugName,
-    feedbackScore: feedback?.score,
+    feedbackScore: displayFeedback?.score,
+    feedbackHeadline: displayFeedback?.headline,
   });
   const latestDoctorReply = [...doctorMessages].reverse().find((message) => message.role === "assistant")?.text ?? null;
   const doctorBubbleText =
@@ -107,14 +111,14 @@ export function CasePlayer() {
   }, [mode, allowedTestingQuestionTypes, questionType]);
 
   useEffect(() => {
-    if (mode !== "testing" || !choice || !feedback) return;
+    if (mode !== "testing" || !choice || !feedback || !testingReasoningQualified) return;
     const attemptKey = `${patient.id}:${testingIndex}:${choice}`;
     if (scoredTestingAttempts.current.has(attemptKey)) return;
     scoredTestingAttempts.current.add(attemptKey);
     if (!patient.appropriate.includes(choice)) return;
     const earned = getTestingPointsForScore(feedback.score ?? 80);
     setScoredPoints((prev) => prev + earned);
-  }, [mode, choice, feedback, patient.id, testingIndex, patient.appropriate]);
+  }, [mode, choice, feedback, testingReasoningQualified, patient.id, testingIndex, patient.appropriate]);
 
   function switchMode(nextMode: Mode) {
     setMode(nextMode);
@@ -131,6 +135,8 @@ export function CasePlayer() {
 
   function handleChoice(drugId: string) {
     setShortAnswerError("");
+    setSubmittedResponseFeedback(null);
+    setTestingReasoningQualified(false);
     setChoice(drugId);
     setBubbleSource("context");
   }
@@ -143,6 +149,8 @@ export function CasePlayer() {
     setChoice(null);
     setShortAnswerInput("");
     setShortAnswerError("");
+    setSubmittedResponseFeedback(null);
+    setTestingReasoningQualified(false);
     setShowHint(false);
     setBreatherSecondsLeft(0);
     setLearningPhase("idle");
@@ -150,18 +158,18 @@ export function CasePlayer() {
 
   function submitShortAnswer() {
     const content = shortAnswerInput.trim();
-    if (!hasSufficientShortAnswerReasoning(content)) {
-      setShortAnswerError("Include both the medication class and a brief clinical reason (at least one sentence).");
-      return;
-    }
-
+    const reasoningQualified = hasSufficientShortAnswerReasoning(content);
     const resolved = resolveDrugFromAnswer(content, drugs);
-    if (!resolved) {
-      setShortAnswerError("Could not match that answer. Try a medication class name from the choices.");
-      return;
-    }
+    const responseFeedback = buildShortAnswerSubmissionFeedback({
+      content,
+      resolvedDrug: resolved,
+      reasoningQualified,
+      patient,
+    });
     setShortAnswerError("");
-    setChoice(resolved.id);
+    setSubmittedResponseFeedback(responseFeedback);
+    setTestingReasoningQualified(reasoningQualified);
+    setChoice(resolved?.id ?? null);
     setBubbleSource("context");
   }
 
@@ -171,13 +179,6 @@ export function CasePlayer() {
   }
 
   function openDoctorFromFeedback() {
-    const draftQuestion = selectedDrugName
-      ? `Can you explain why ${selectedDrugName} scored ${feedback?.score ?? "this score"} for this patient and what I should monitor next?`
-      : "Can you explain this medication score and what I should monitor next?";
-
-    if (!doctorQuestion.trim()) {
-      setDoctorQuestion(draftQuestion);
-    }
     setShowDoctor(true);
   }
 
@@ -198,7 +199,7 @@ export function CasePlayer() {
             mode,
             patient,
             selectedDrug,
-            feedback,
+            feedback: displayFeedback,
           },
         }),
       });
@@ -236,48 +237,15 @@ export function CasePlayer() {
   }
 
   function renderInlineFeedback(): ReactNode {
-    if (!feedback || testingComplete) return null;
+    if (!displayFeedback || testingComplete) return null;
+    const currentFeedback = displayFeedback;
 
-    return (
-      <div className="inline-feedback">
-        <div className="score-wrap">
-          <p className="score">{feedbackEmoji} Score: {feedback.score}/100</p>
-          <p className="headline">{feedback.headline}</p>
-        </div>
-        <p className="rationale">{feedback.rationale}</p>
-        <p className="feedback-label">Key points</p>
-        <ul className="feedback-list">
-          {feedback.bullets.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-        {feedback.evidence.length > 0 && <p className="feedback-label">Evidence</p>}
-        {feedback.evidence.length > 0 && (
-          <p className="evidence">
-            Evidence: {feedback.evidence[0].source} - {feedback.evidence[0].quote}
-          </p>
-        )}
-        {feedback.sideEffects.length > 0 && (
-          <div className="side-effects">
-            <p className="side-effects-title">Potential side effects to monitor</p>
-            <ul>
-              {feedback.sideEffects.map((effect) => (
-                <li key={effect}>{explainSideEffect(effect)}</li>
-              ))}
-            </ul>
+    if (mode === "testing") {
+      return (
+        <div className="inline-feedback">
+          <div className="score-wrap">
+            <p className="score">{feedbackEmoji} Score: {currentFeedback.score}/100</p>
           </div>
-        )}
-        {mode === "learning" && (
-          <div className="quiz-actions">
-            <p className="rationale">
-              Checkpoint: {selectedDrugName} scored {feedback.score}/100 for this case.
-            </p>
-            <button type="button" onClick={startLearningConsolidation}>
-              Next: Start Consolidation Timer
-            </button>
-          </div>
-        )}
-        {mode === "testing" && (
           <div className="quiz-actions">
             <button
               type="button"
@@ -289,11 +257,46 @@ export function CasePlayer() {
               View Next Patient
             </button>
           </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="inline-feedback">
+        <div className="score-wrap">
+          <p className="score">{feedbackEmoji} Score: {currentFeedback.score}/100</p>
+          <p className="headline">{currentFeedback.headline}</p>
+        </div>
+        <p className="rationale">{currentFeedback.rationale}</p>
+        <p className="feedback-label">Key points</p>
+        <ul className="feedback-list">
+          {currentFeedback.bullets.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        {currentFeedback.evidence.length > 0 && <p className="feedback-label">Evidence</p>}
+        {currentFeedback.evidence.length > 0 && (
+          <p className="evidence">
+            Evidence: {currentFeedback.evidence[0].source} - {currentFeedback.evidence[0].quote}
+          </p>
         )}
-        {mode === "testing" && (
+        {currentFeedback.sideEffects.length > 0 && (
+          <div className="side-effects">
+            <p className="side-effects-title">Potential side effects to monitor</p>
+            <ul>
+              {currentFeedback.sideEffects.map((effect) => (
+                <li key={effect}>{explainSideEffect(effect)}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {mode === "learning" && (
           <div className="quiz-actions">
-            <button type="button" onClick={openDoctorFromFeedback}>
-              Speak to AI Doctor
+            <p className="rationale">
+              Checkpoint: {selectedDrugName} scored {currentFeedback.score}/100 for this case.
+            </p>
+            <button type="button" onClick={startLearningConsolidation}>
+              Next: Start Consolidation Timer
             </button>
           </div>
         )}
@@ -308,7 +311,7 @@ export function CasePlayer() {
           riskScore={riskScore}
           reaction={reaction}
           celebrateIdeal={celebrateIdeal}
-          feedbackEmoji={feedback ? feedbackEmoji : null}
+          feedbackEmoji={displayFeedback ? feedbackEmoji : null}
           doctorPromptText={doctorBubbleText}
           doctorMood={doctorMood}
           doctorShowBubble
@@ -500,22 +503,22 @@ export function CasePlayer() {
           )}
 
           <div className="hud-panel drug-panel">
-            {mode === "learning" && learningConsolidationActive && feedback ? (
+            {mode === "learning" && learningConsolidationActive && displayFeedback ? (
               <>
                 <h3>Recall Summary</h3>
                 <p className="rationale">
-                  {selectedDrugName}: {feedback.headline}
+                  {selectedDrugName}: {displayFeedback.headline}
                 </p>
                 <ul className="drug-list">
-                  {feedback.bullets.slice(0, 4).map((item) => (
+                  {displayFeedback.bullets.slice(0, 4).map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                {feedback.sideEffects.length > 0 && (
+                {displayFeedback.sideEffects.length > 0 && (
                   <>
                     <p className="feedback-label">Monitor for</p>
                     <ul className="drug-list">
-                      {feedback.sideEffects.map((effect) => (
+                      {displayFeedback.sideEffects.map((effect) => (
                         <li key={effect}>{effect}</li>
                       ))}
                     </ul>
@@ -621,17 +624,20 @@ export function CasePlayer() {
                     <textarea
                       className="doctor-input"
                       rows={3}
-                      placeholder='Example: "SGLT2 inhibitor, because CKD and hypoglycemia risk favor renal-protective, low-hypo options."'
+                      placeholder="Enter your medication class and reasoning..."
                       value={shortAnswerInput}
                       onChange={(e) => setShortAnswerInput(e.target.value)}
                     />
                     {shortAnswerError && <p className="input-error">{shortAnswerError}</p>}
                     <div className="quiz-actions">
-                      <button type="button" onClick={submitShortAnswer}>
-                        Submit Short Answer
+                      <button
+                        type="button"
+                        onClick={displayFeedback ? openDoctorFromFeedback : submitShortAnswer}
+                      >
+                        {displayFeedback ? "Ask more" : "Submit Short Answer"}
                       </button>
                     </div>
-                    {feedback && renderInlineFeedback()}
+                    {displayFeedback && renderInlineFeedback()}
                   </div>
                 )}
               </>
@@ -699,30 +705,48 @@ function buildDoctorPromptText({
   mode,
   selectedDrugName,
   feedbackScore,
+  feedbackHeadline,
 }: {
   mode: Mode;
   selectedDrugName: string | null;
   feedbackScore?: number;
+  feedbackHeadline?: string;
 }) {
   if (mode === "browse") {
     if (selectedDrugName && typeof feedbackScore === "number") {
-      if (feedbackScore >= 85) return `${selectedDrugName}: strong pick for this patient.`;
-      if (feedbackScore >= 60) return `${selectedDrugName}: reasonable, but there may be a better fit.`;
-      return `${selectedDrugName}: weak fit here, re-check risks and priorities.`;
+      if (feedbackScore >= 95) return `${selectedDrugName}? Absolutely legendary pick.`;
+      if (feedbackScore >= 85) return `${selectedDrugName}: YES. That choice lands hard in the right direction.`;
+      if (feedbackScore >= 60) return `${selectedDrugName}: decent move, but you can do better.`;
+      if (feedbackScore >= 40) return `${selectedDrugName}: uh oh, this is getting risky.`;
+      return `${selectedDrugName}: dramatic miss. Re-check patient safety priorities now.`;
     }
     return "Do you have any questions?";
   }
 
   if (mode === "learning") {
     if (selectedDrugName && typeof feedbackScore === "number") {
-      if (feedbackScore >= 85) return `${selectedDrugName}: great fit for this case.`;
-      if (feedbackScore >= 60) return `${selectedDrugName}: decent option, but we can optimize further.`;
-      return `${selectedDrugName}: not ideal here; reassess key risks and goals.`;
+      if (feedbackScore >= 95) return `${selectedDrugName}: perfect clinical read. Incredible work.`;
+      if (feedbackScore >= 85) return `${selectedDrugName}: strong call. Keep this momentum.`;
+      if (feedbackScore >= 60) return `${selectedDrugName}: okay, but tighten your rationale.`;
+      if (feedbackScore >= 40) return `${selectedDrugName}: rough fit. Let's clean up the logic.`;
+      return `${selectedDrugName}: hard no. This needs a full rethink.`;
     }
     return "Which medication would you choose?";
   }
 
   if (mode === "testing") {
+    if (feedbackHeadline && typeof feedbackScore === "number") {
+      if (feedbackScore >= 85) return `${feedbackHeadline}. Excellent execution.`;
+      if (feedbackScore >= 60) return `${feedbackHeadline}. You're close, refine your rationale.`;
+      return `${feedbackHeadline}. This needs a stronger clinical justification.`;
+    }
+    if (selectedDrugName && typeof feedbackScore === "number") {
+      if (feedbackScore >= 95) return `${selectedDrugName}: flawless answer. That was elite.`;
+      if (feedbackScore >= 85) return `${selectedDrugName}: big win. Your reasoning tracks.`;
+      if (feedbackScore >= 60) return `${selectedDrugName}: partial hit. Sharpen the why.`;
+      if (feedbackScore >= 40) return `${selectedDrugName}: shaky. You need a safer justification.`;
+      return `${selectedDrugName}: red alert answer. Rebuild from patient risks first.`;
+    }
     return "Which medication would you choose?";
   }
   return "Do you have any questions?";
@@ -757,6 +781,83 @@ function getTestingPointsForScore(score: number) {
   if (score >= 95) return 75;
   if (score >= 80) return 50;
   return Math.max(40, Math.round(score * 0.6));
+}
+
+function buildShortAnswerSubmissionFeedback({
+  content,
+  resolvedDrug,
+  reasoningQualified,
+  patient,
+}: {
+  content: string;
+  resolvedDrug: ReturnType<typeof getAllDrugs>[number] | null;
+  reasoningQualified: boolean;
+  patient: ReturnType<typeof getAllCases>[number];
+}): Feedback {
+  if (!content.trim()) {
+    return {
+      headline: "No answer submitted",
+      score: 0,
+      bullets: [
+        "Submit any medication class attempt to get targeted feedback.",
+        "Include a brief reason linked to this patient's risks and goals.",
+      ],
+      rationale: "Try: medication class + one clinical reason (for example CKD, hypoglycemia risk, weight, or cost).",
+      sideEffects: [],
+      evidence: [],
+    };
+  }
+
+  if (!resolvedDrug) {
+    return {
+      headline: "Could not identify medication class",
+      score: 0,
+      bullets: [
+        "We could not match your medication class to available options.",
+        "Use one of the listed classes and keep your explanation concise.",
+      ],
+      rationale: "Your reasoning is noted, but the medication class needs to be recognizable for grading.",
+      sideEffects: [],
+      evidence: [],
+    };
+  }
+
+  const baseFeedback = gradeChoice(patient, resolvedDrug.id);
+  if (!baseFeedback) {
+    return {
+      headline: "Unable to grade this response",
+      score: 0,
+      bullets: ["Try submitting again with a medication class from the list."],
+      rationale: "A grading error occurred for this specific response.",
+      sideEffects: [],
+      evidence: [],
+    };
+  }
+
+  if (!patient.appropriate.includes(resolvedDrug.id)) {
+    return {
+      ...baseFeedback,
+      score: 0,
+      headline: "Incorrect medication choice",
+      rationale: "This selected class is not appropriate for this patient in this case.",
+    };
+  }
+
+  if (reasoningQualified) {
+    return baseFeedback;
+  }
+
+  return {
+    ...baseFeedback,
+    score: Math.min(baseFeedback.score, 55),
+    headline: "Medication recognized, but reasoning needs work",
+    bullets: [
+      "Your medication selection was captured.",
+      "Add a clearer clinical reason linked to this patient profile.",
+      "Mention at least one specific risk/goal (CKD, hypoglycemia, weight, cost, ASCVD/HF).",
+    ],
+    rationale: "Points in Testing mode require both a clinically appropriate choice and strong reasoning.",
+  };
 }
 
 function a1cInterpretation(a1c: number) {
