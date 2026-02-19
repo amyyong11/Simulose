@@ -4218,7 +4218,7 @@ function CasePlayer() {
                             onClick: ()=>setShowDoctor((open)=>!open),
                             "aria-expanded": showDoctor,
                             "aria-controls": "ai-doctor-panel",
-                            children: showDoctor ? "Hide Chat" : "Open Chat"
+                            children: showDoctor ? "Hide Chat" : "Ask Doctor"
                         }, void 0, false, {
                             fileName: "[project]/src/components/CasePlayer.tsx",
                             lineNumber: 393,

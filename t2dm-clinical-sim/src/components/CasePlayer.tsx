@@ -397,7 +397,7 @@ export function CasePlayer() {
               aria-expanded={showDoctor}
               aria-controls="ai-doctor-panel"
             >
-              {showDoctor ? "Hide Chat" : "Open Chat"}
+              {showDoctor ? "Hide Chat" : "Ask Doctor"}
             </button>
           )}
           <div className="emoji-key-wrap">
