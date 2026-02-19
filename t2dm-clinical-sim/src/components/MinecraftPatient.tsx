@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useTexture } from "@react-three/drei";
+import { Html, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import type { Group, MeshStandardMaterial, Texture } from "three";
 import type { PatientReaction } from "@/lib/types";
@@ -371,6 +371,24 @@ export function MinecraftPatient({ riskScore, reaction, celebrateIdeal, feedback
 
   return (
     <group ref={root} position={[-0.6, -0.8, 0.25]}>
+      <Html position={[0, 2.32, 0.1]} center>
+        <div
+          style={{
+            pointerEvents: "none",
+            padding: "3px 8px",
+            borderRadius: "999px",
+            fontSize: "11px",
+            fontWeight: 700,
+            letterSpacing: "0.04em",
+            textTransform: "uppercase",
+            color: "#f7fbff",
+            background: "rgba(25, 32, 42, 0.88)",
+            border: "1px solid rgba(162, 187, 214, 0.45)",
+          }}
+        >
+          Patient
+        </div>
+      </Html>
       <group ref={body}>
         <group ref={legRight} position={[-P(2), P(6), 0]}>
           <mesh castShadow material={legRightMaterials}>

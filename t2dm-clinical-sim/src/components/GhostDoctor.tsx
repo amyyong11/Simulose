@@ -47,6 +47,24 @@ export function GhostDoctor({
 
   return (
     <group ref={root} position={[0.6, 0, 0.15]}>
+      <Html position={[0, 1.04, 0.24]} center>
+        <div
+          style={{
+            pointerEvents: "none",
+            padding: "3px 8px",
+            borderRadius: "999px",
+            fontSize: "11px",
+            fontWeight: 700,
+            letterSpacing: "0.04em",
+            textTransform: "uppercase",
+            color: "#f7fbff",
+            background: "rgba(25, 32, 42, 0.88)",
+            border: "1px solid rgba(162, 187, 214, 0.45)",
+          }}
+        >
+          Doctor
+        </div>
+      </Html>
       <group position={[0, 0.35, 0]}>
         <mesh castShadow>
           <sphereGeometry args={[0.38, 24, 24]} />

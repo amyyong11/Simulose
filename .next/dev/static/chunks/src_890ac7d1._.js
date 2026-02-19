@@ -9,6 +9,7 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$react$2d$three$2f$fiber$2f$dist$2f$events$2d$5a94e5eb$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__D__as__useFrame$3e$__ = __turbopack_context__.i("[project]/node_modules/@react-three/fiber/dist/events-5a94e5eb.esm.js [app-client] (ecmascript) <export D as useFrame>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$react$2d$three$2f$drei$2f$web$2f$Html$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@react-three/drei/web/Html.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$react$2d$three$2f$drei$2f$core$2f$Texture$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@react-three/drei/core/Texture.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$three$2f$build$2f$three$2e$core$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/three/build/three.core.js [app-client] (ecmascript)");
 ;
@@ -571,230 +572,263 @@ function MinecraftPatient({ riskScore, reaction, celebrateIdeal, feedbackEmoji }
             -0.8,
             0.25
         ],
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
-            ref: body,
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
-                    ref: legRight,
-                    position: [
-                        -P(2),
-                        P(6),
-                        0
-                    ],
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
-                        castShadow: true,
-                        material: legRightMaterials,
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
-                            args: [
-                                P(4),
-                                P(12),
-                                P(4)
-                            ]
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/MinecraftPatient.tsx",
-                            lineNumber: 377,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/MinecraftPatient.tsx",
-                        lineNumber: 376,
-                        columnNumber: 11
-                    }, this)
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$react$2d$three$2f$drei$2f$web$2f$Html$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Html"], {
+                position: [
+                    0,
+                    2.32,
+                    0.1
+                ],
+                center: true,
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    style: {
+                        pointerEvents: "none",
+                        padding: "3px 8px",
+                        borderRadius: "999px",
+                        fontSize: "11px",
+                        fontWeight: 700,
+                        letterSpacing: "0.04em",
+                        textTransform: "uppercase",
+                        color: "#f7fbff",
+                        background: "rgba(25, 32, 42, 0.88)",
+                        border: "1px solid rgba(162, 187, 214, 0.45)"
+                    },
+                    children: "Patient"
                 }, void 0, false, {
                     fileName: "[project]/src/components/MinecraftPatient.tsx",
                     lineNumber: 375,
                     columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
-                    ref: legLeft,
-                    position: [
-                        P(2),
-                        P(6),
-                        0
-                    ],
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
-                        castShadow: true,
-                        material: legLeftMaterials,
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
-                            args: [
-                                P(4),
-                                P(12),
-                                P(4)
-                            ]
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/MinecraftPatient.tsx",
-                            lineNumber: 382,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/MinecraftPatient.tsx",
-                        lineNumber: 381,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/src/components/MinecraftPatient.tsx",
-                    lineNumber: 380,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
-                    position: [
-                        0,
-                        P(18),
-                        0
-                    ],
-                    castShadow: true,
-                    material: bodyMaterials,
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
-                        args: [
-                            P(8),
-                            P(12),
-                            P(4)
-                        ]
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/MinecraftPatient.tsx",
-                        lineNumber: 387,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/src/components/MinecraftPatient.tsx",
-                    lineNumber: 386,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
-                    ref: armRight,
-                    position: [
-                        -P(6),
-                        P(18),
-                        0
-                    ],
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
-                        castShadow: true,
-                        material: armRightMaterials,
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
-                            args: [
-                                P(4),
-                                P(12),
-                                P(4)
-                            ]
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/MinecraftPatient.tsx",
-                            lineNumber: 392,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/MinecraftPatient.tsx",
-                        lineNumber: 391,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/src/components/MinecraftPatient.tsx",
-                    lineNumber: 390,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
-                    ref: armLeft,
-                    position: [
-                        P(6),
-                        P(18),
-                        0
-                    ],
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
-                        castShadow: true,
-                        material: armLeftMaterials,
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
-                            args: [
-                                P(4),
-                                P(12),
-                                P(4)
-                            ]
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/MinecraftPatient.tsx",
-                            lineNumber: 397,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/MinecraftPatient.tsx",
-                        lineNumber: 396,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/src/components/MinecraftPatient.tsx",
-                    lineNumber: 395,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
-                    ref: head,
-                    position: [
-                        0,
-                        P(28),
-                        0
-                    ],
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
-                        castShadow: true,
-                        material: headMaterials,
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
-                            args: [
-                                P(8),
-                                P(8),
-                                P(8)
-                            ]
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/MinecraftPatient.tsx",
-                            lineNumber: 403,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/MinecraftPatient.tsx",
-                        lineNumber: 402,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/src/components/MinecraftPatient.tsx",
-                    lineNumber: 401,
-                    columnNumber: 9
-                }, this),
-                thumbsMaterial && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
-                    ref: thumbsRef,
-                    position: [
-                        0,
-                        P(22),
-                        0
-                    ],
-                    visible: false,
-                    children: Array.from({
-                        length: 9
-                    }).map((_, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("sprite", {
-                            ref: (el)=>{
-                                thumbSprites.current[i] = el;
-                            },
-                            material: thumbsMaterial,
-                            position: [
-                                0,
-                                0,
-                                0
-                            ],
-                            scale: [
-                                0.2,
-                                0.2,
-                                0.2
-                            ]
-                        }, i, false, {
-                            fileName: "[project]/src/components/MinecraftPatient.tsx",
-                            lineNumber: 410,
-                            columnNumber: 15
-                        }, this))
-                }, void 0, false, {
-                    fileName: "[project]/src/components/MinecraftPatient.tsx",
-                    lineNumber: 408,
-                    columnNumber: 11
                 }, this)
-            ]
-        }, void 0, true, {
-            fileName: "[project]/src/components/MinecraftPatient.tsx",
-            lineNumber: 374,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
+            }, void 0, false, {
+                fileName: "[project]/src/components/MinecraftPatient.tsx",
+                lineNumber: 374,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
+                ref: body,
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
+                        ref: legRight,
+                        position: [
+                            -P(2),
+                            P(6),
+                            0
+                        ],
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
+                            castShadow: true,
+                            material: legRightMaterials,
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
+                                args: [
+                                    P(4),
+                                    P(12),
+                                    P(4)
+                                ]
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/MinecraftPatient.tsx",
+                                lineNumber: 395,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MinecraftPatient.tsx",
+                            lineNumber: 394,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/MinecraftPatient.tsx",
+                        lineNumber: 393,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
+                        ref: legLeft,
+                        position: [
+                            P(2),
+                            P(6),
+                            0
+                        ],
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
+                            castShadow: true,
+                            material: legLeftMaterials,
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
+                                args: [
+                                    P(4),
+                                    P(12),
+                                    P(4)
+                                ]
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/MinecraftPatient.tsx",
+                                lineNumber: 400,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MinecraftPatient.tsx",
+                            lineNumber: 399,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/MinecraftPatient.tsx",
+                        lineNumber: 398,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
+                        position: [
+                            0,
+                            P(18),
+                            0
+                        ],
+                        castShadow: true,
+                        material: bodyMaterials,
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
+                            args: [
+                                P(8),
+                                P(12),
+                                P(4)
+                            ]
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MinecraftPatient.tsx",
+                            lineNumber: 405,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/MinecraftPatient.tsx",
+                        lineNumber: 404,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
+                        ref: armRight,
+                        position: [
+                            -P(6),
+                            P(18),
+                            0
+                        ],
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
+                            castShadow: true,
+                            material: armRightMaterials,
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
+                                args: [
+                                    P(4),
+                                    P(12),
+                                    P(4)
+                                ]
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/MinecraftPatient.tsx",
+                                lineNumber: 410,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MinecraftPatient.tsx",
+                            lineNumber: 409,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/MinecraftPatient.tsx",
+                        lineNumber: 408,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
+                        ref: armLeft,
+                        position: [
+                            P(6),
+                            P(18),
+                            0
+                        ],
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
+                            castShadow: true,
+                            material: armLeftMaterials,
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
+                                args: [
+                                    P(4),
+                                    P(12),
+                                    P(4)
+                                ]
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/MinecraftPatient.tsx",
+                                lineNumber: 415,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MinecraftPatient.tsx",
+                            lineNumber: 414,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/MinecraftPatient.tsx",
+                        lineNumber: 413,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
+                        ref: head,
+                        position: [
+                            0,
+                            P(28),
+                            0
+                        ],
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
+                            castShadow: true,
+                            material: headMaterials,
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("boxGeometry", {
+                                args: [
+                                    P(8),
+                                    P(8),
+                                    P(8)
+                                ]
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/MinecraftPatient.tsx",
+                                lineNumber: 421,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MinecraftPatient.tsx",
+                            lineNumber: 420,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/MinecraftPatient.tsx",
+                        lineNumber: 419,
+                        columnNumber: 9
+                    }, this),
+                    thumbsMaterial && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
+                        ref: thumbsRef,
+                        position: [
+                            0,
+                            P(22),
+                            0
+                        ],
+                        visible: false,
+                        children: Array.from({
+                            length: 9
+                        }).map((_, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("sprite", {
+                                ref: (el)=>{
+                                    thumbSprites.current[i] = el;
+                                },
+                                material: thumbsMaterial,
+                                position: [
+                                    0,
+                                    0,
+                                    0
+                                ],
+                                scale: [
+                                    0.2,
+                                    0.2,
+                                    0.2
+                                ]
+                            }, i, false, {
+                                fileName: "[project]/src/components/MinecraftPatient.tsx",
+                                lineNumber: 428,
+                                columnNumber: 15
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/MinecraftPatient.tsx",
+                        lineNumber: 426,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/MinecraftPatient.tsx",
+                lineNumber: 392,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "[project]/src/components/MinecraftPatient.tsx",
         lineNumber: 373,
         columnNumber: 5
@@ -897,6 +931,37 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
             0.15
         ],
         children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$react$2d$three$2f$drei$2f$web$2f$Html$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Html"], {
+                position: [
+                    0,
+                    1.04,
+                    0.24
+                ],
+                center: true,
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    style: {
+                        pointerEvents: "none",
+                        padding: "3px 8px",
+                        borderRadius: "999px",
+                        fontSize: "11px",
+                        fontWeight: 700,
+                        letterSpacing: "0.04em",
+                        textTransform: "uppercase",
+                        color: "#f7fbff",
+                        background: "rgba(25, 32, 42, 0.88)",
+                        border: "1px solid rgba(162, 187, 214, 0.45)"
+                    },
+                    children: "Doctor"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/GhostDoctor.tsx",
+                    lineNumber: 51,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/components/GhostDoctor.tsx",
+                lineNumber: 50,
+                columnNumber: 7
+            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
                 position: [
                     0,
@@ -915,7 +980,7 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 ]
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 52,
+                                lineNumber: 70,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
@@ -925,13 +990,13 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 roughness: 0.25
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 53,
+                                lineNumber: 71,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 51,
+                        lineNumber: 69,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
@@ -950,7 +1015,7 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 ]
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 56,
+                                lineNumber: 74,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
@@ -960,13 +1025,13 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 roughness: 0.3
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 57,
+                                lineNumber: 75,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 55,
+                        lineNumber: 73,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
@@ -985,7 +1050,7 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 ]
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 60,
+                                lineNumber: 78,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
@@ -995,19 +1060,19 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 roughness: 0.35
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 61,
+                                lineNumber: 79,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 59,
+                        lineNumber: 77,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                lineNumber: 50,
+                lineNumber: 68,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
@@ -1032,20 +1097,20 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 ]
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 67,
+                                lineNumber: 85,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
                                 color: "#1f2835"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 68,
+                                lineNumber: 86,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 66,
+                        lineNumber: 84,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
@@ -1063,20 +1128,20 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 ]
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 71,
+                                lineNumber: 89,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
                                 color: "#1f2835"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 72,
+                                lineNumber: 90,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 70,
+                        lineNumber: 88,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
@@ -1095,7 +1160,7 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 ]
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 75,
+                                lineNumber: 93,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
@@ -1104,13 +1169,13 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 roughness: 0.3
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 76,
+                                lineNumber: 94,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 74,
+                        lineNumber: 92,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
@@ -1129,7 +1194,7 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 ]
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 79,
+                                lineNumber: 97,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
@@ -1138,13 +1203,13 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 roughness: 0.3
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 80,
+                                lineNumber: 98,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 78,
+                        lineNumber: 96,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("mesh", {
@@ -1162,20 +1227,20 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                 ]
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 83,
+                                lineNumber: 101,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
                                 color: "#4a5e71"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                                lineNumber: 84,
+                                lineNumber: 102,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 82,
+                        lineNumber: 100,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
@@ -1200,25 +1265,25 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/GhostDoctor.tsx",
-                                    lineNumber: 89,
+                                    lineNumber: 107,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
                                     color: "#243244"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/GhostDoctor.tsx",
-                                    lineNumber: 90,
+                                    lineNumber: 108,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/GhostDoctor.tsx",
-                            lineNumber: 88,
+                            lineNumber: 106,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 87,
+                        lineNumber: 105,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
@@ -1243,25 +1308,25 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/GhostDoctor.tsx",
-                                    lineNumber: 95,
+                                    lineNumber: 113,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
                                     color: "#243244"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/GhostDoctor.tsx",
-                                    lineNumber: 96,
+                                    lineNumber: 114,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/GhostDoctor.tsx",
-                            lineNumber: 94,
+                            lineNumber: 112,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 93,
+                        lineNumber: 111,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("group", {
@@ -1293,31 +1358,31 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/GhostDoctor.tsx",
-                                    lineNumber: 101,
+                                    lineNumber: 119,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("meshStandardMaterial", {
                                     color: "#243244"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/GhostDoctor.tsx",
-                                    lineNumber: 102,
+                                    lineNumber: 120,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/GhostDoctor.tsx",
-                            lineNumber: 100,
+                            lineNumber: 118,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/GhostDoctor.tsx",
-                        lineNumber: 99,
+                        lineNumber: 117,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                lineNumber: 65,
+                lineNumber: 83,
                 columnNumber: 7
             }, this),
             showBubble && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$react$2d$three$2f$drei$2f$web$2f$Html$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Html"], {
@@ -1354,12 +1419,12 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                     children: promptText
                 }, void 0, false, {
                     fileName: "[project]/src/components/GhostDoctor.tsx",
-                    lineNumber: 109,
+                    lineNumber: 127,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                lineNumber: 108,
+                lineNumber: 126,
                 columnNumber: 9
             }, this),
             showPanelTrail && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$react$2d$three$2f$drei$2f$web$2f$Html$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Html"], {
@@ -1388,7 +1453,7 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                             }
                         }, void 0, false, {
                             fileName: "[project]/src/components/GhostDoctor.tsx",
-                            lineNumber: 149,
+                            lineNumber: 167,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1403,7 +1468,7 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                             }
                         }, void 0, false, {
                             fileName: "[project]/src/components/GhostDoctor.tsx",
-                            lineNumber: 159,
+                            lineNumber: 177,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1418,18 +1483,18 @@ function GhostDoctor({ mood, promptText, showBubble = true, showPanelTrail = fal
                             }
                         }, void 0, false, {
                             fileName: "[project]/src/components/GhostDoctor.tsx",
-                            lineNumber: 170,
+                            lineNumber: 188,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/GhostDoctor.tsx",
-                    lineNumber: 141,
+                    lineNumber: 159,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/GhostDoctor.tsx",
-                lineNumber: 140,
+                lineNumber: 158,
                 columnNumber: 9
             }, this)
         ]
